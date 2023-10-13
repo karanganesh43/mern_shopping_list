@@ -70,3 +70,6 @@ docker-compose up -d --build
 
 # Stop the containers
 docker-compose down
+
+# Access the application:
+https://localhost/ 
