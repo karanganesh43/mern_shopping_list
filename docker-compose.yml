@@ -1,0 +1,38 @@
+version: '3'
+services:
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile-frontend
+    ports:
+      - "3000:3000"
+  
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile-backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    environment:
+      - MONGO_URI=mongodb://db:27017/your_database_name
+      - JWT_SECRET=sl_myJwtSecret
+
+  db:
+    image: "mongo:latest"
+    ports:
+      - "27017:27017"
+  
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    ports:
+      - "80:80"
+      - "443:443"  # To expose HTTPS
+    depends_on:
+      - frontend
+      - backend
+    volumes:  # To make the SSL certificates available to Nginx
+      - ./certs:/etc/nginx/certs/
