@@ -22,10 +22,10 @@ services:
       - PORT=5000
 
   db:
-    image: "mongo:latest"
+    image: "mongo:4.4" # Specifying a version ensures you have both the server and client.
     ports:
       - "27017:27017"
-  
+
   nginx:
     build:
       context: .
@@ -38,3 +38,6 @@ services:
       - backend
     volumes:  # To make the SSL certificates available to Nginx
       - ./certs:/etc/nginx/certs/
+
+# To build the application:
+# docker-compose up -d --build
